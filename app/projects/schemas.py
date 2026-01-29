@@ -26,4 +26,4 @@ class ProjectOut(ProjectBase):
     is_completed: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
