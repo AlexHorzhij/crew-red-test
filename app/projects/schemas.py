@@ -1,7 +1,7 @@
 from typing import List, Optional
 from datetime import date
 from pydantic import BaseModel
-from app.places.schemas import PlaceOut, PlaceCreateInput
+from app.places.schemas import PlaceOut
 
 
 class ProjectBase(BaseModel):
@@ -11,7 +11,7 @@ class ProjectBase(BaseModel):
 
 
 class ProjectCreate(ProjectBase):
-    places: Optional[List[PlaceCreateInput]] = []
+    places: Optional[List[int]] = []
 
 
 class ProjectUpdate(BaseModel):

@@ -1,55 +1,87 @@
 # Travel Planner API
 
-This is a RESTful API for a Travel Planner application, built with FastAPI.
+This is a robust RESTful API for a Travel Planner application, built with a modern Python stack and following domain-driven design principles.
 
-## Features
+## 🚀 Technologies Used
 
-- Manage Travel Projects (Create, Read, Update, Delete)
-- Manage Places to visit within projects
-- Integration with Art Institute of Chicago API to validate places and fetch titles
-- Max 10 places per project
-- Prevent deleting projects with visited places
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) - High-performance web framework.
+- **Server**: [Uvicorn](https://www.uvicorn.org/) - ASGI server for Python.
+- **Database**: [SQLite](https://sqlite.org/) with [SQLAlchemy](https://www.sqlalchemy.org/) ORM.
+- **Configuration Management**: [Pydantic Settings](https://docs.pydantic.dev/latest/usage/pydantic_settings/) for typed environment variables.
+- **Rate Limiting**: [SlowAPI](https://github.com/laurentS/slowapi) for DDoS protection.
+- **Containerization**: [Docker](https://www.docker.com/).
+- **Validation**: [Pydantic](https://docs.pydantic.dev/) for data schemas.
+- **External Integration**: [Art Institute of Chicago API](https://api.artic.edu/docs/) for artwork validation.
 
-## Setup
+## ✨ Key Features
 
-1. **Install dependencies**:
+- **Project Management**: CRUD operations for travel projects.
+- **Place Management**: Add and manage places (artworks) within projects.
+- **Validation Business Logic**:
+  - Maximum 10 places per project.
+  - Transactions for atomic project/place creation.
+  - Prevention of project deletion if any place is marked as "visited".
+- **Centralized Error Handling**: Global exception handlers to prevent sensitive data leaks.
+- **Centralized Logging**: Structured logging for database operations and API errors.
+- **Rate Limiting**: Protects your endpoints from abuse.
 
+## 🛠️ Setup & Local Running
+
+### 1. Configure Environment
+
+Create a `.env` file in the root directory (you can use the existing template):
+
+```env
+PROJECT_NAME="Travel Planner API"
+DATABASE_URL="sqlite:///./travel_planner.db"
+DEFAULT_RATE_LIMIT="60/minute"
+```
+
+### 2. Local Installation
+
+1. Register and activate your virtual environment:
+   ```bash
+   python -m venv .venv
+   source .venv/Scripts/activate  # On Windows: .venv\Scripts\activate
+   ```
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-2. **Run the server**:
-
+3. Start the server:
    ```bash
    uvicorn app.main:app --reload
    ```
 
-3. **Explore the API**:
-   Open your browser and navigate to:
-   - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-   - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+## 🐳 Docker Support
 
-## Testing
+If you have Docker installed, you can run the app without local Python installation:
 
-You can use the interactive Swagger UI to test endpoints.
+1. **Build the image**:
 
-### Example Workflow
-
-1. **Create a Project**: POST `/projects/`
-   ```json
-   {
-     "name": "Chicago Art Trip",
-     "description": "Visiting museums",
-     "start_date": "2023-10-27",
-     "places": [{ "external_id": 129884 }, { "external_id": 24645 }]
-   }
+   ```bash
+   docker build -t travel-planner-api .
    ```
-2. **List Projects**: GET `/projects/`
-3. **Add Place**: POST `/projects/{id}/places`
-   ```json
-   { "external_id": 80607 }
+
+2. **Run the container**:
+   ```bash
+   docker run -p 8000:8000 --env-file .env travel-planner-api
    ```
-4. **Mark as Visited**: PUT `/places/{place_id}`
-   ```json
-   { "visited": true, "notes": "Amazing painting!" }
-   ```
+
+## 📖 API Documentation
+
+Once the server is running, explore the interactive documentation:
+
+- **Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **ReDoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+## 📁 Project Structure
+
+```bash
+app/
+├── core/            # Configuration, database, and logging setup
+├── external/        # External API clients (Art Institute)
+├── places/          # Places domain (Router, Service, Repository, Schemas)
+├── projects/        # Projects domain (Router, Service, Repository, Schemas)
+└── main.py          # FastAPI application entry point
+```

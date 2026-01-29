@@ -17,14 +17,14 @@ class ProjectService:
                 )
 
             seen_ids = set()
-            for p in project_in.places:
-                if p.external_id in seen_ids:
+            for external_id in project_in.places:
+                if external_id in seen_ids:
                     raise HTTPException(
-                        status_code=400, detail=f"Duplicate place ID {p.external_id}"
+                        status_code=400, detail=f"Duplicate place ID {external_id}"
                     )
-                seen_ids.add(p.external_id)
-                # Just validate existence during project creation
-                details = PlaceService.get_and_validate_artwork(p.external_id)
+                seen_ids.add(external_id)
+
+                details = PlaceService.get_and_validate_artwork(external_id)
                 validated_places.append(details)
 
         project_data = {

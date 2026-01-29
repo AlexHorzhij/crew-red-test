@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.projects.service import ProjectService
 from app.projects import schemas
+from app.places.schemas import PlaceCreateInput
 from app.core.database import get_db
 
 router = APIRouter(
@@ -47,7 +48,7 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
     status_code=status.HTTP_201_CREATED,
 )
 def add_place_to_project(
-    project_id: int, place_in: schemas.PlaceCreateInput, db: Session = Depends(get_db)
+    project_id: int, place_in: PlaceCreateInput, db: Session = Depends(get_db)
 ):
     return ProjectService.add_place_to_project(db, project_id, place_in.external_id)
 

@@ -1,7 +1,9 @@
 import requests
 from fastapi import HTTPException
 
-BASE_URL = "https://api.artic.edu/api/v1/artworks"
+from app.core.config import settings
+
+BASE_URL = settings.ART_API_BASE_URL
 
 
 def get_artwork_details(external_id: int):
