@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://localhost:3000/",
+        "https://crew-red-test-front.vercel.app/",
     ]
 
     # Trusted Hosts
