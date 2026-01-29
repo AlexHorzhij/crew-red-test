@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     ]
 
     # Trusted Hosts
-    ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1"]
+    ALLOWED_HOSTS: List[str] = ["*"]
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
